@@ -1,486 +1,297 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kameti Calculator</title>
+  <title>Kameti Dashboard</title>
   <style>
-    /* Exact Color Palette & Typography from Image */
+    /* Warm Beige Palette from Pic 1 applied to Layout of Pic 2 */
     :root {
-      --bg-color: #f3edd9;            /* Warm beige outer background */
-      --card-bg: #faf7ed;          /* Light cream card container background */
-      --card-border: #e2d9be;      /* Soft border tone */
-      --text-dark: #1b263b;        /* Dark navy header & text */
-      --title-red: #8c3227;        /* Reddish-brown headings */
-      --box-bg: #e8dcc4;          /* Sand filled inner boxes */
-      --navy-btn: #1a2536;         /* Dark navy button background */
-      --input-bg: #ffffff;         /* White input background */
-      --accent-highlight: #b04336; /* Highlighted numbers */
+      --bg-color: #f3edd9;         /* Cream Background */
+      --card-bg: #faf7ed;       /* Light Cream Card */
+      --card-border: #e2d9be;   /* Border Tone */
+      --text-dark: #1b263b;     /* Navy Dark Text */
+      --title-red: #8c3227;     /* Reddish-Brown Title */
+      --box-bg: #e8dcc4;       /* Sand Box Background */
+      --input-bg: #ffffff;      /* White Input Background */
+      --navy-btn: #1a2536;      /* Dark Navy Accent */
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Georgia', 'Times New Roman', serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
       background-color: var(--bg-color);
       color: var(--text-dark);
-      padding: 30px 15px;
-      line-height: 1.5;
+      padding: 40px 20px;
     }
 
-    .container {
-      max-width: 850px;
+    .dashboard-container {
+      max-width: 900px;
       margin: 0 auto;
-    }
-
-    /* Main Title Section */
-    .header {
-      border-bottom: 2px solid var(--text-dark);
-      padding-bottom: 12px;
-      margin-bottom: 25px;
-    }
-
-    .header h1 {
-      font-size: 32px;
-      color: var(--text-dark);
-      font-weight: bold;
-    }
-
-    .header p {
-      font-style: italic;
-      color: #555;
-      font-size: 14px;
-      margin-top: 4px;
-    }
-
-    /* Section Card Outer Frame */
-    .section-card {
       background-color: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 6px;
-      padding: 20px;
+      border-radius: 12px;
+      padding: 35px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    }
+
+    /* Top Title */
+    .dashboard-title {
+      color: var(--title-red);
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
       margin-bottom: 25px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      letter-spacing: -0.3px;
     }
 
-    .section-title {
-      color: var(--title-red);
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 15px;
+    /* Top Metrics Bar (Pic 2 Style) */
+    .metrics-bar {
       display: flex;
+      justify-content: space-around;
       align-items: center;
-      gap: 6px;
+      background-color: var(--box-bg);
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      text-align: center;
     }
 
-    .section-title::before {
-      content: "•";
-      font-size: 22px;
+    .metric-item {
+      flex: 1;
     }
 
-    /* Form Fields Styling */
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
+    .metric-divider {
+      width: 1px;
+      height: 35px;
+      background-color: #c7beaa;
     }
 
-    label {
+    .metric-label {
       font-size: 11px;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-      color: #555;
-      text-transform: uppercase;
-    }
-
-    input, select {
-      background: var(--input-bg);
-      border: 1px solid #c7beaa;
-      padding: 10px 12px;
-      font-size: 15px;
-      border-radius: 3px;
-      outline: none;
-      color: var(--text-dark);
-      width: 100%;
-      font-family: monospace, sans-serif;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--text-dark);
-    }
-
-    .btn-navy {
-      background-color: var(--navy-btn);
-      color: #ffffff;
-      border: none;
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: bold;
-      border-radius: 3px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn-navy:hover {
-      background-color: #0f172a;
-    }
-
-    /* Member List Add Section */
-    .member-input-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .members-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .member-item {
-      background-color: var(--box-bg);
-      padding: 10px 15px;
-      border-radius: 3px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 15px;
-    }
-
-    .remove-btn {
-      color: #888;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 14px;
-      border: none;
-      background: none;
-    }
-
-    .remove-btn:hover {
-      color: var(--title-red);
-    }
-
-    /* Settings Grid */
-    .settings-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
-    }
-
-    /* Auto Calculation Metrics Grid */
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .metric-box {
-      background-color: var(--box-bg);
-      padding: 15px;
-      border-radius: 4px;
-    }
-
-    .metric-box .label {
-      font-size: 10px;
-      font-weight: bold;
-      letter-spacing: 0.5px;
+      font-weight: 700;
       color: #666;
       text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 5px;
     }
 
-    .metric-box .value {
+    .metric-value {
       font-size: 22px;
-      font-weight: bold;
+      font-weight: 800;
       color: var(--text-dark);
-      margin-top: 8px;
-      font-family: monospace, monospace;
     }
 
-    .metric-box .value.highlight {
-      color: var(--accent-highlight);
+    /* Input Controls Grid (Pic 2 Style) */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 30px;
+      margin-bottom: 30px;
     }
 
-    /* Summary Breakdown Block */
-    .summary-info {
-      background-color: var(--box-bg);
-      padding: 15px;
-      border-radius: 4px;
+    .control-group {
       display: flex;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 14px;
-    }
-
-    .summary-row {
-      display: flex;
+      align-items: center;
       justify-content: space-between;
-      border-bottom: 1px dashed #d1c5a9;
-      padding-bottom: 6px;
+      gap: 15px;
     }
 
-    .summary-row:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
+    .control-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-dark);
+      white-space: nowrap;
     }
 
-    .summary-row .val {
-      font-weight: bold;
-      font-family: monospace, monospace;
+    .control-input {
+      width: 55%;
+      background-color: var(--input-bg);
+      border: 1px solid #c7beaa;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-dark);
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .control-input:focus {
+      border-color: var(--navy-btn);
     }
 
     /* Draw Schedule Table */
-    .table-container {
-      overflow-x: auto;
+    .table-section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--title-red);
+      margin-bottom: 12px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
+      border-radius: 8px;
+      overflow: hidden;
     }
 
     th {
       background-color: var(--navy-btn);
       color: #ffffff;
-      padding: 12px;
+      padding: 12px 15px;
       text-align: left;
-      font-weight: bold;
-      font-size: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
     td {
-      padding: 12px;
+      padding: 12px 15px;
       border-bottom: 1px solid var(--card-border);
       background-color: #fcfaf3;
-      font-family: monospace, monospace;
+      font-size: 14px;
+      font-weight: 500;
     }
 
     tr:nth-child(even) td {
       background-color: #f5f0e1;
     }
+
+    @media (max-width: 650px) {
+      .controls-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      .metrics-bar {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .metric-divider {
+        width: 80%;
+        height: 1px;
+      }
+    }
   </style>
 </head>
 <body>
 
-<div class="container">
-  
-  <!-- Header -->
-  <div class="header">
-    <h1>Kameti Calculator</h1>
-    <p>Members, amount aur draw set karein — baqi hisab khud ban jayega</p>
-  </div>
+  <div class="dashboard-container">
+    <div class="dashboard-title">Kameti Calculator Dashboard</div>
 
-  <!-- Members Section -->
-  <div class="section-card">
-    <div class="section-title">Members</div>
-    
-    <div class="members-list" id="membersList"></div>
-
-    <div class="member-input-row">
-      <input type="text" id="memberNameInput" placeholder="Member ka naam likhein" onkeypress="handleKeyPress(event)">
-      <button class="btn-navy" onclick="addMember()">Add Karein</button>
+    <!-- Top Metrics (Pic 2 Layout + Pic 1 Colors) -->
+    <div class="metrics-bar">
+      <div class="metric-item">
+        <div class="metric-label">Collection / Draw</div>
+        <div class="metric-value" id="collectionDraw">PKR 200,000</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric-item">
+        <div class="metric-label">Total Rounds</div>
+        <div class="metric-value" id="totalRounds">20</div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric-item">
+        <div class="metric-label">Total Cycle Volume</div>
+        <div class="metric-value" id="cycleVolume">PKR 4,000,000</div>
+      </div>
     </div>
-  </div>
 
-  <!-- Settings Section -->
-  <div class="section-card">
-    <div class="section-title">Settings</div>
-    <div class="settings-grid">
-      <div class="input-group">
-        <label>FI RUKAN / MAHINA (RS)</label>
-        <input type="number" id="installmentInput" value="10000" oninput="calculate()">
+    <!-- Control Inputs Grid (Pic 2 Layout) -->
+    <div class="controls-grid">
+      <div class="control-group">
+        <label class="control-label">Total Members</label>
+        <input type="number" id="members" value="20" class="control-input" oninput="calculate()">
       </div>
-      <div class="input-group">
-        <label>EK DRAW MEIN KITNY NIKALTY HAIN</label>
-        <input type="number" id="winnersInput" value="1" min="1" oninput="calculate()">
+
+      <div class="control-group">
+        <label class="control-label">Installment (Rs)</label>
+        <input type="number" id="installment" value="10000" class="control-input" oninput="calculate()">
       </div>
-      <div class="input-group">
-        <label>DRAW KITNY MAHINE BAAD HOTA HAI</label>
-        <select id="frequencySelect" onchange="calculate()">
-          <option value="1">1 Mahina (Monthly)</option>
-          <option value="0.5">0.5 Mahina (15 Din / Maheene Mein 2)</option>
-          <option value="0.333">0.33 Mahina (Har 10 Din Baad)</option>
-          <option value="0.033">0.03 Mahina (Rozana / Daily)</option>
+
+      <div class="control-group">
+        <label class="control-label">Draw Frequency</label>
+        <select id="frequency" class="control-input" onchange="calculate()">
+          <option value="1">Monthly</option>
+          <option value="0.5">Bi-Monthly (Maheene mein 2)</option>
+          <option value="0.33">10 Days Cycle</option>
+          <option value="0.03">Daily</option>
         </select>
       </div>
+
+      <div class="control-group">
+        <label class="control-label">Winners Per Draw</label>
+        <input type="number" id="winners" value="1" min="1" class="control-input" oninput="calculate()">
+      </div>
     </div>
+
+    <!-- Breakdown Table -->
+    <div class="table-section-title">Schedule Summary</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Round #</th>
+          <th>Time Period</th>
+          <th>Pool Amount</th>
+        </tr>
+      </thead>
+      <tbody id="scheduleBody">
+      </tbody>
+    </table>
   </div>
 
-  <!-- Auto Calculation Section -->
-  <div class="section-card">
-    <div class="section-title">Auto Calculation</div>
+  <script>
+    function calculate() {
+      const members = parseInt(document.getElementById('members').value) || 0;
+      const installment = parseFloat(document.getElementById('installment').value) || 0;
+      const winners = parseInt(document.getElementById('winners').value) || 1;
+      const frequency = parseFloat(document.getElementById('frequency').value) || 1;
 
-    <div class="metrics-grid">
-      <div class="metric-box">
-        <div class="label">TOTAL MEMBERS</div>
-        <div class="value" id="totalMembersVal">0</div>
-      </div>
-      <div class="metric-box">
-        <div class="label">HAR MAHINE KA POOL</div>
-        <div class="value" id="monthlyPoolVal">Rs 0</div>
-      </div>
-      <div class="metric-box">
-        <div class="label">FI NIKALNY WALA MILTA HAI</div>
-        <div class="value highlight" id="perWinnerVal">Rs 0</div>
-      </div>
-      <div class="metric-box">
-        <div class="label">KUL DRAWS</div>
-        <div class="value" id="totalDrawsVal">0</div>
-      </div>
-      <div class="metric-box" style="grid-column: span 1;">
-        <div class="label">KAMETI KHATAM HOGI</div>
-        <div class="value highlight" id="durationVal">0 mahine mein</div>
-      </div>
-    </div>
+      // Backend Calculations
+      const collectionPerDraw = members * installment;
+      const rounds = members > 0 ? Math.ceil(members / winners) : 0;
+      const totalVolume = collectionPerDraw * rounds;
 
-    <div class="summary-info">
-      <div class="summary-row">
-        <span>Agar mahine mein 1 banda nikle:</span>
-        <span class="val" id="summaryOneWinner">Rs 0</span>
-      </div>
-      <div class="summary-row">
-        <span>Agar mahine mein 3 bande nikalein:</span>
-        <span class="val" id="summaryThreeWinners">Rs 0</span>
-      </div>
-      <div class="summary-row">
-        <span>Aap ki current setting (<span id="currWinnerSetting">1</span> nikalny wale):</span>
-        <span class="val" id="summaryCurrentSetting">Rs 0 fi banda</span>
-      </div>
-    </div>
-  </div>
+      // Display Top Metrics
+      document.getElementById('collectionDraw').innerText = `PKR ${collectionPerDraw.toLocaleString()}`;
+      document.getElementById('totalRounds').innerText = rounds;
+      document.getElementById('cycleVolume').innerText = `PKR ${totalVolume.toLocaleString()}`;
 
-  <!-- Draw Schedule Table -->
-  <div class="section-card">
-    <div class="section-title">Draw Schedule</div>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Draw #</th>
-            <th>Mahina / Time</th>
-            <th>Nikalny Walay</th>
-            <th>Fi Banda Milega</th>
-          </tr>
-        </thead>
-        <tbody id="scheduleBody">
-        </tbody>
-      </table>
-    </div>
-  </div>
+      // Populate Table
+      const tbody = document.getElementById('scheduleBody');
+      tbody.innerHTML = '';
 
-</div>
-
-<script>
-  let members = ["fahan"];
-
-  function renderMembers() {
-    const container = document.getElementById('membersList');
-    container.innerHTML = '';
-    members.forEach((m, index) => {
-      const div = document.createElement('div');
-      div.className = 'member-item';
-      div.innerHTML = `
-        <span>${index + 1}. ${m}</span>
-        <button class="remove-btn" onclick="removeMember(${index})">✕</button>
-      `;
-      container.appendChild(div);
-    });
-    calculate();
-  }
-
-  function addMember() {
-    const input = document.getElementById('memberNameInput');
-    const name = input.value.trim();
-    if (name) {
-      members.push(name);
-      input.value = '';
-      renderMembers();
-    }
-  }
-
-  function removeMember(index) {
-    members.splice(index, 1);
-    renderMembers();
-  }
-
-  function handleKeyPress(e) {
-    if (e.key === 'Enter') {
-      addMember();
-    }
-  }
-
-  function calculate() {
-    const totalMembers = members.length;
-    const installment = parseFloat(document.getElementById('installmentInput').value) || 0;
-    const winnersPerDraw = parseInt(document.getElementById('winnersInput').value) || 1;
-    const frequencyInMonths = parseFloat(document.getElementById('frequencySelect').value) || 1;
-
-    // Metrics
-    const poolPerDraw = totalMembers * installment;
-    const totalDraws = totalMembers > 0 ? Math.ceil(totalMembers / winnersPerDraw) : 0;
-    const totalDurationMonths = totalDraws * frequencyInMonths;
-    const perWinnerReceives = poolPerDraw; 
-
-    // Update DOM Metrics
-    document.getElementById('totalMembersVal').innerText = totalMembers;
-    document.getElementById('monthlyPoolVal').innerText = `Rs ${poolPerDraw.toLocaleString()}`;
-    document.getElementById('perWinnerVal').innerText = `Rs ${perWinnerReceives.toLocaleString()}`;
-    document.getElementById('totalDrawsVal').innerText = totalDraws;
-    
-    // Duration Label Formatting
-    if (totalDurationMonths < 1) {
-      const days = Math.round(totalDurationMonths * 30);
-      document.getElementById('durationVal').innerText = `${days} din mein`;
-    } else {
-      document.getElementById('durationVal').innerText = `${totalDurationMonths.toFixed(1).replace('.0','')} mahine mein`;
-    }
-
-    // Update Summary Box
-    document.getElementById('summaryOneWinner').innerText = `Rs ${poolPerDraw.toLocaleString()}`;
-    document.getElementById('summaryThreeWinners').innerText = `Rs ${poolPerDraw.toLocaleString()}`;
-    document.getElementById('currWinnerSetting').innerText = winnersPerDraw;
-    document.getElementById('summaryCurrentSetting').innerText = `Rs ${perWinnerReceives.toLocaleString()} fi banda`;
-
-    // Render Table Schedule
-    const tbody = document.getElementById('scheduleBody');
-    tbody.innerHTML = '';
-
-    if (totalMembers === 0) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Koi member mojood nahi hai</td></tr>';
-      return;
-    }
-
-    let memberIndex = 0;
-    for (let i = 1; i <= totalDraws; i++) {
-      let drawWinners = [];
-      for (let w = 0; w < winnersPerDraw && memberIndex < totalMembers; w++) {
-        drawWinners.push(members[memberIndex]);
-        memberIndex++;
+      if (rounds === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Enter valid member details</td></tr>';
+        return;
       }
 
-      const timeVal = (i * frequencyInMonths).toFixed(1).replace('.0','');
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>#${i}</td>
-        <td>Month ${timeVal}</td>
-        <td>${drawWinners.join(', ')}</td>
-        <td>Rs ${perWinnerReceives.toLocaleString()}</td>
-      `;
-      tbody.appendChild(tr);
+      for (let i = 1; i <= Math.min(rounds, 20); i++) {
+        const timeVal = (i * frequency).toFixed(1).replace('.0', '');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>Round ${i}</td>
+          <td>Month ${timeVal}</td>
+          <td>PKR ${collectionPerDraw.toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      if (rounds > 20) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="3" style="text-align:center; font-style:italic;">...and ${rounds - 20} more rounds</td>`;
+        tbody.appendChild(tr);
+      }
     }
-  }
 
-  // Initial Load
-  renderMembers();
-</script>
-
+    // Initial Calculation
+    calculate();
+  </script>
 </body>
 </html>
