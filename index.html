@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Kameti Dashboard</title>
   <style>
     /* Warm Beige Palette */
     :root {
-      --bg-color: #f3edd9;         /* Cream Background */
-      --card-bg: #faf7ed;       /* Light Cream Card */
-      --card-border: #e2d9be;   /* Border Tone */
-      --text-dark: #1b263b;     /* Navy Dark Text */
-      --title-red: #8c3227;     /* Reddish-Brown Title */
-      --box-bg: #e8dcc4;       /* Sand Box Background */
-      --input-bg: #ffffff;      /* White Input Background */
-      --navy-btn: #1a2536;      /* Dark Navy Accent */
+      --bg-color: #f3edd9;         
+      --card-bg: #faf7ed;       
+      --card-border: #e2d9be;   
+      --text-dark: #1b263b;     
+      --title-red: #8c3227;     
+      --box-bg: #e8dcc4;       
+      --input-bg: #ffffff;      
+      --navy-btn: #1a2536;      
     }
 
     * {
@@ -22,48 +22,86 @@
       margin: 0;
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
       background-color: var(--bg-color);
       color: var(--text-dark);
-      padding: 40px 20px;
+      padding: 15px 10px;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    /* Password Screen Styling */
-    .password-container {
-      max-width: 400px;
+    .app-wrapper {
       width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Language Switcher Bar */
+    .lang-switcher {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .lang-btn {
+      background-color: var(--box-bg);
+      border: 1px solid #c7beaa;
+      color: var(--text-dark);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn.active {
+      background-color: var(--navy-btn);
+      color: #ffffff;
+      border-color: var(--navy-btn);
+    }
+
+    /* Mobile Password Screen */
+    .password-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
       background-color: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+      border-radius: 16px;
+      padding: 30px 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
       text-align: center;
     }
 
     .password-title {
       color: var(--title-red);
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     .password-input {
       width: 100%;
       background-color: var(--input-bg);
       border: 1px solid #c7beaa;
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 15px;
+      border-radius: 10px;
+      padding: 14px 12px;
+      font-size: 16px; /* Prevents auto-zoom on mobile safari */
       color: var(--text-dark);
       outline: none;
       margin-bottom: 15px;
       text-align: center;
+    }
+
+    .password-input:focus {
+      border-color: var(--navy-btn);
     }
 
     .password-btn {
@@ -71,22 +109,23 @@
       background-color: var(--navy-btn);
       color: #ffffff;
       border: none;
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 15px;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 16px;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s;
+      touch-action: manipulation;
     }
 
-    .password-btn:hover {
-      background-color: #0f172a;
+    .password-btn:active {
+      transform: scale(0.98);
     }
 
     .error-msg {
       color: #d9534f;
       font-size: 13px;
-      margin-top: 10px;
+      margin-top: 12px;
       display: none;
     }
 
@@ -94,44 +133,41 @@
     .dashboard-container {
       display: none;
       width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
       background-color: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 35px;
+      border-radius: 16px;
+      padding: 20px 15px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.04);
     }
 
     /* Top Title */
     .dashboard-title {
       color: var(--title-red);
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 700;
       text-align: center;
-      margin-bottom: 25px;
-      letter-spacing: -0.3px;
+      margin-bottom: 20px;
     }
 
-    /* Top Metrics Bar */
+    /* Top Metrics Bar (Mobile Adaptive) */
     .metrics-bar {
       display: flex;
-      justify-content: space-around;
-      align-items: center;
+      flex-direction: column;
+      gap: 12px;
       background-color: var(--box-bg);
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 30px;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 20px;
       text-align: center;
     }
 
     .metric-item {
-      flex: 1;
+      padding: 4px 0;
     }
 
     .metric-divider {
-      width: 1px;
-      height: 35px;
+      height: 1px;
+      width: 100%;
       background-color: #c7beaa;
     }
 
@@ -140,86 +176,86 @@
       font-weight: 700;
       color: #666;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 5px;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
     }
 
     .metric-value {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
       color: var(--text-dark);
     }
 
     /* Input Controls Grid */
     .controls-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px 30px;
-      margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 25px;
     }
 
     .control-group {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
     }
 
     .control-label {
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-dark);
-      white-space: nowrap;
     }
 
     .control-input {
-      width: 55%;
+      width: 100%;
       background-color: var(--input-bg);
       border: 1px solid #c7beaa;
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 15px;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--text-dark);
       outline: none;
-      transition: border 0.2s;
-    }
-
-    .control-input:focus {
-      border-color: var(--navy-btn);
+      -webkit-appearance: none;
     }
 
     /* Draw Schedule Table */
     .table-section-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--title-red);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      border-radius: 8px;
-      overflow: hidden;
+      min-width: 300px;
     }
 
     th {
       background-color: var(--navy-btn);
       color: #ffffff;
-      padding: 12px 15px;
+      padding: 10px 12px;
       text-align: left;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     td {
-      padding: 12px 15px;
+      padding: 10px 12px;
       border-bottom: 1px solid var(--card-border);
       background-color: #fcfaf3;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
     }
 
@@ -227,99 +263,223 @@
       background-color: #f5f0e1;
     }
 
-    @media (max-width: 650px) {
-      .controls-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
+    /* Desktop Adjustments */
+    @media (min-width: 650px) {
+      body {
+        padding: 40px 20px;
+      }
+      .dashboard-container {
+        padding: 35px;
+      }
+      .dashboard-title {
+        font-size: 24px;
       }
       .metrics-bar {
-        flex-direction: column;
-        gap: 15px;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 20px;
       }
       .metric-divider {
-        width: 80%;
-        height: 1px;
+        width: 1px;
+        height: 35px;
+      }
+      .metric-value {
+        font-size: 22px;
+      }
+      .controls-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px 30px;
+      }
+      .control-group {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .control-input {
+        width: 55%;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Password Screen -->
-  <div class="password-container" id="passwordBox">
-    <div class="password-title">Enter Password</div>
-    <input type="password" id="passInput" class="password-input" placeholder="Password daalein" onkeypress="handlePassKey(event)">
-    <button class="password-btn" onclick="checkPassword()">Access Dashboard</button>
-    <div class="error-msg" id="errorMsg">Incorrect Password! Dobara try karein.</div>
-  </div>
-
-  <!-- Dashboard Content -->
-  <div class="dashboard-container" id="dashboardContent">
-    <div class="dashboard-title">Kameti Calculator Dashboard</div>
-
-    <!-- Top Metrics -->
-    <div class="metrics-bar">
-      <div class="metric-item">
-        <div class="metric-label">Collection / Draw</div>
-        <div class="metric-value" id="collectionDraw">PKR 200,000</div>
-      </div>
-      <div class="metric-divider"></div>
-      <div class="metric-item">
-        <div class="metric-label">Total Rounds</div>
-        <div class="metric-value" id="totalRounds">20</div>
-      </div>
-      <div class="metric-divider"></div>
-      <div class="metric-item">
-        <div class="metric-label">Total Cycle Volume</div>
-        <div class="metric-value" id="cycleVolume">PKR 4,000,000</div>
-      </div>
+  <div class="app-wrapper">
+    
+    <!-- Top Language Switcher -->
+    <div class="lang-switcher">
+      <button class="lang-btn active" id="btnEng" onclick="setLanguage('en')">English</button>
+      <button class="lang-btn" id="btnUrdu" onclick="setLanguage('ur')">Roman Urdu</button>
     </div>
 
-    <!-- Control Inputs Grid -->
-    <div class="controls-grid">
-      <div class="control-group">
-        <label class="control-label">Total Members</label>
-        <input type="number" id="members" value="20" class="control-input" oninput="calculate()">
-      </div>
-
-      <div class="control-group">
-        <label class="control-label">Installment (Rs)</label>
-        <input type="number" id="installment" value="10000" class="control-input" oninput="calculate()">
-      </div>
-
-      <div class="control-group">
-        <label class="control-label">Draw Frequency</label>
-        <select id="frequency" class="control-input" onchange="calculate()">
-          <option value="1">Monthly</option>
-          <option value="0.5">Bi-Monthly (Maheene mein 2)</option>
-          <option value="0.33">10 Days Cycle</option>
-          <option value="0.03">Daily</option>
-        </select>
-      </div>
-
-      <div class="control-group">
-        <label class="control-label">Winners Per Draw</label>
-        <input type="number" id="winners" value="1" min="1" class="control-input" oninput="calculate()">
-      </div>
+    <!-- Password Screen -->
+    <div class="password-container" id="passwordBox">
+      <div class="password-title" id="txtPassTitle">Kameti Dashboard</div>
+      <input type="password" id="passInput" class="password-input" placeholder="Enter Password" onkeypress="handlePassKey(event)">
+      <button class="password-btn" id="btnAccess" onclick="checkPassword()">Access Dashboard</button>
+      <div class="error-msg" id="errorMsg">Incorrect Password! (Password: Ahbab)</div>
     </div>
 
-    <!-- Breakdown Table -->
-    <div class="table-section-title">Schedule Summary</div>
-    <table>
-      <thead>
-        <tr>
-          <th>Round #</th>
-          <th>Time Period</th>
-          <th>Pool Amount</th>
-        </tr>
-      </thead>
-      <tbody id="scheduleBody">
-      </tbody>
-    </table>
+    <!-- Mobile-Friendly Dashboard -->
+    <div class="dashboard-container" id="dashboardContent">
+      <div class="dashboard-title" id="txtMainTitle">Kameti Calculator Dashboard</div>
+
+      <!-- Top Metrics -->
+      <div class="metrics-bar">
+        <div class="metric-item">
+          <div class="metric-label" id="lblCollection">Collection / Draw</div>
+          <div class="metric-value" id="collectionDraw">PKR 200,000</div>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <div class="metric-label" id="lblRounds">Total Rounds</div>
+          <div class="metric-value" id="totalRounds">20</div>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <div class="metric-label" id="lblVolume">Total Cycle Volume</div>
+          <div class="metric-value" id="cycleVolume">PKR 4,000,000</div>
+        </div>
+      </div>
+
+      <!-- Control Inputs Grid -->
+      <div class="controls-grid">
+        <div class="control-group">
+          <label class="control-label" id="lblMembers">Total Members</label>
+          <input type="number" id="members" value="20" class="control-input" oninput="calculate()">
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" id="lblInstallment">Installment (Rs)</label>
+          <input type="number" id="installment" value="10000" class="control-input" oninput="calculate()">
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" id="lblFrequency">Draw Frequency</label>
+          <select id="frequency" class="control-input" onchange="calculate()">
+            <option value="1" id="optMonthly">Monthly</option>
+            <option value="0.5" id="optBiMonthly">Bi-Monthly (Maheene mein 2)</option>
+            <option value="0.33" id="optTenDays">10 Days Cycle</option>
+            <option value="0.03" id="optDaily">Daily</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" id="lblWinners">Winners Per Draw</label>
+          <input type="number" id="winners" value="1" min="1" class="control-input" oninput="calculate()">
+        </div>
+      </div>
+
+      <!-- Breakdown Table -->
+      <div class="table-section-title" id="lblTableTitle">Schedule Summary</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th id="thRound">Round #</th>
+              <th id="thTime">Time Period</th>
+              <th id="thPool">Pool Amount</th>
+            </tr>
+          </thead>
+          <tbody id="scheduleBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <script>
-    // Password Logic
+    let currentLang = 'en';
+
+    const translations = {
+      en: {
+        passTitle: "Kameti Dashboard",
+        passPlaceholder: "Enter Password",
+        btnAccess: "Access Dashboard",
+        errMsg: "Incorrect Password! (Password: Ahbab)",
+        mainTitle: "Kameti Calculator Dashboard",
+        collection: "Collection / Draw",
+        rounds: "Total Rounds",
+        volume: "Total Cycle Volume",
+        members: "Total Members",
+        installment: "Installment (Rs)",
+        frequency: "Draw Frequency",
+        optMonthly: "Monthly",
+        optBiMonthly: "Bi-Monthly (2 per month)",
+        optTenDays: "10 Days Cycle",
+        optDaily: "Daily",
+        winners: "Winners Per Draw",
+        tableTitle: "Schedule Summary",
+        thRound: "Round #",
+        thTime: "Time Period",
+        thPool: "Pool Amount",
+        monthText: "Month",
+        roundText: "Round",
+        invalidText: "Enter valid member details"
+      },
+      ur: {
+        passTitle: "Kameti Dashboard",
+        passPlaceholder: "Password Likhein",
+        btnAccess: "Dashboard Kholein",
+        errMsg: "Ghalat Password! (Password: Ahbab)",
+        mainTitle: "Kameti Calculator Dashboard",
+        collection: "Har Draw Ka Pool",
+        rounds: "Kul Rounds",
+        volume: "Kul Total Rakam",
+        members: "Kul Members",
+        installment: "Fi Banda Qist (Rs)",
+        frequency: "Draw Kitni Der Baad Ho",
+        optMonthly: "Mahana (Monthly)",
+        optBiMonthly: "Maheene Mein 2 Baar",
+        optTenDays: "Har 10 Din Baad",
+        optDaily: "Rozana (Daily)",
+        winners: "Ek Draw Mein Kitne Nikle",
+        tableTitle: "Draw Schedule Detail",
+        thRound: "Round #",
+        thTime: "Waqt / Mahina",
+        thPool: "Inam Ki Rakam",
+        monthText: "Mahina",
+        roundText: "Round",
+        invalidText: "Sahi member details daalein"
+      }
+    };
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      
+      // Update Active Button UI
+      document.getElementById('btnEng').classList.toggle('active', lang === 'en');
+      document.getElementById('btnUrdu').classList.toggle('active', lang === 'ur');
+
+      // Update Labels
+      const t = translations[lang];
+      document.getElementById('txtPassTitle').innerText = t.passTitle;
+      document.getElementById('passInput').placeholder = t.passPlaceholder;
+      document.getElementById('btnAccess').innerText = t.btnAccess;
+      document.getElementById('errorMsg').innerText = t.errMsg;
+      document.getElementById('txtMainTitle').innerText = t.mainTitle;
+
+      document.getElementById('lblCollection').innerText = t.collection;
+      document.getElementById('lblRounds').innerText = t.rounds;
+      document.getElementById('lblVolume').innerText = t.volume;
+
+      document.getElementById('lblMembers').innerText = t.members;
+      document.getElementById('lblInstallment').innerText = t.installment;
+      document.getElementById('lblFrequency').innerText = t.frequency;
+      document.getElementById('optMonthly').innerText = t.optMonthly;
+      document.getElementById('optBiMonthly').innerText = t.optBiMonthly;
+      document.getElementById('optTenDays').innerText = t.optTenDays;
+      document.getElementById('optDaily').innerText = t.optDaily;
+      document.getElementById('lblWinners').innerText = t.winners;
+
+      document.getElementById('lblTableTitle').innerText = t.tableTitle;
+      document.getElementById('thRound').innerText = t.thRound;
+      document.getElementById('thTime').innerText = t.thTime;
+      document.getElementById('thPool').innerText = t.thPool;
+
+      calculate();
+    }
+
     function checkPassword() {
       const inputPass = document.getElementById('passInput').value;
       const errorMsg = document.getElementById('errorMsg');
@@ -339,29 +499,26 @@
       }
     }
 
-    // Calculation Logic
     function calculate() {
       const members = parseInt(document.getElementById('members').value) || 0;
       const installment = parseFloat(document.getElementById('installment').value) || 0;
       const winners = parseInt(document.getElementById('winners').value) || 1;
       const frequency = parseFloat(document.getElementById('frequency').value) || 1;
+      const t = translations[currentLang];
 
-      // Backend Calculations
       const collectionPerDraw = members * installment;
       const rounds = members > 0 ? Math.ceil(members / winners) : 0;
       const totalVolume = collectionPerDraw * rounds;
 
-      // Display Top Metrics
       document.getElementById('collectionDraw').innerText = `PKR ${collectionPerDraw.toLocaleString()}`;
       document.getElementById('totalRounds').innerText = rounds;
       document.getElementById('cycleVolume').innerText = `PKR ${totalVolume.toLocaleString()}`;
 
-      // Populate Table
       const tbody = document.getElementById('scheduleBody');
       tbody.innerHTML = '';
 
       if (rounds === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Enter valid member details</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">${t.invalidText}</td></tr>`;
         return;
       }
 
@@ -369,8 +526,8 @@
         const timeVal = (i * frequency).toFixed(1).replace('.0', '');
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>Round ${i}</td>
-          <td>Month ${timeVal}</td>
+          <td>${t.roundText} ${i}</td>
+          <td>${t.monthText} ${timeVal}</td>
           <td>PKR ${collectionPerDraw.toLocaleString()}</td>
         `;
         tbody.appendChild(tr);
